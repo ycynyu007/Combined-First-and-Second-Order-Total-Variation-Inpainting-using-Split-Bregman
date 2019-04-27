@@ -1,5 +1,10 @@
 function fd = get_fd(height,width,l0,l1,l2)
 
+% For the subproblem 2 in the paper, get_fd function compute the 2D fast 
+% fourier transform of the left side of the equation (18) since we can
+% compute it as circular convolution. So that fourier transform makes the
+% computation more efficient.
+
 fd = ones(height,width)*l0;
 
 dxx = zeros(height,width);
@@ -37,5 +42,6 @@ d2x2y(1,width) = -2;
 d2x2y(2,width) = 1;
 d2x2y(height,width) = 1;
 
-fd = fd - l1*(fft2(dxx)+fft2(dyy)) + l2*(fft2(d4x)+fft2(d4y)+fft2(d2x2y));
+fd = fd - l1*(fft2(gpuArray(dxx))+fft2(gpuArray(dyy))) + l2*...
+    (fft2(gpuArray(d4x)) + fft2(gpuArray(d4y)) + 2*fft2(gpuArray(d2x2y)));
 
