@@ -1,0 +1,12 @@
+function [uk,cost] = tv12inpaint(u,ori,alpha,beta,lamda,iter,thresh)
+
+[height,width] = size(u);
+
+[Dx,Dy,Dxx,Dyy,D_x,D_y] = diff_gene(height,width)
+
+[v_x,v_y] = u_grad(u,Dx,Dy);
+
+[w_x,w_y] = u_grad2(u,Dxx,Dyy);
+
+
+for 
